@@ -50,6 +50,9 @@ class MainActivity : ComponentActivity() {
     private lateinit var buttonhc1: Button
     private lateinit var buttonhc2: Button
     private lateinit var buttonhc3: Button
+    private lateinit var buttona1: Button
+    private lateinit var buttona2: Button
+    private lateinit var buttona3: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +61,9 @@ class MainActivity : ComponentActivity() {
         buttonhc1 = findViewById(R.id.buttonhc1)
         buttonhc2 = findViewById(R.id.buttonhc2)
         buttonhc3 = findViewById(R.id.buttonhc3)
+        buttona1 = findViewById(R.id.buttona1)
+        buttona2 = findViewById(R.id.buttona2)
+        buttona3 = findViewById(R.id.buttona3)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         // Assume you have a method to get current location
@@ -96,6 +102,11 @@ class MainActivity : ComponentActivity() {
             }
         }
 
+        if (hasCalendarReadPermission()) {
+            findGapsInCalendar()
+        } else {
+            requestCalendarReadPermission()
+        }
     }
 
 
@@ -195,6 +206,17 @@ class MainActivity : ComponentActivity() {
     companion object {
         private const val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1
         private const val PERMISSIONS_REQUEST_CALENDAR = 2
+        private const val PERMISSIONS_REQUEST_READ_CALENDAR = 3
+    }
+
+    // Check Calendar Read Permission
+    private fun hasCalendarReadPermission(): Boolean {
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) == PackageManager.PERMISSION_GRANTED
+    }
+
+    // Request Calendar Read Permission
+    private fun requestCalendarReadPermission() {
+        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CALENDAR), PERMISSIONS_REQUEST_READ_CALENDAR)
     }
     // Utility function to check if calendar permissions are granted
     private fun hasCalendarPermission(): Boolean {
@@ -249,4 +271,77 @@ class MainActivity : ComponentActivity() {
         startActivity(intent)
     }
 
+
+    private fun findGapsInCalendar() {
+        val calendar = Calendar.getInstance()
+        val startOfDay = calendar.apply {
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }.timeInMillis
+
+        val endOfDay = calendar.apply {
+            set(Calendar.HOUR_OF_DAY, 23)
+            set(Calendar.MINUTE, 59)
+            set(Calendar.SECOND, 59)
+            set(Calendar.MILLISECOND, 999)
+        }.timeInMillis
+
+        val selection = "(${CalendarContract.Events.DTSTART} >= ? AND ${CalendarContract.Events.DTEND} <= ?)"
+        val selectionArgs = arrayOf(startOfDay.toString(), endOfDay.toString())
+        val projection = arrayOf(CalendarContract.Events.DTSTART, CalendarContract.Events.DTEND)
+
+        val cursor: Cursor? = contentResolver.query(
+            CalendarContract.Events.CONTENT_URI,
+            projection,
+            selection,
+            selectionArgs,
+            null
+        )
+
+        val events = mutableListOf<Pair<Long, Long>>() // List of event start and end times
+        while (cursor?.moveToNext() == true) {
+            val start = cursor.getLong(0)
+            val end = cursor.getLong(1)
+            events.add(start to end)
+        }
+        cursor?.close()
+
+        // Sort events by start time
+        events.sortBy { it.first }
+
+        val gaps = findGaps(events)
+        displayGaps(gaps)
+    }
+
+
+    private fun findGaps(events: List<Pair<Long, Long>>): List<Pair<Long, Long>> {
+        val gaps = mutableListOf<Pair<Long, Long>>()
+
+        // Iterate through events and find gaps
+        for (i in 0 until events.size - 1) {
+            val gapStart = events[i].second
+            val gapEnd = events[i + 1].first
+
+            if (gapStart < gapEnd) {
+                gaps.add(gapStart to gapEnd)
+            }
+        }
+
+        return gaps.take(3) // Take the first three gaps
+    }
+
+    private fun displayGaps(gaps: List<Pair<Long, Long>>) {
+        val buttons = listOf(buttona1, buttona2, buttona3)
+        gaps.forEachIndexed { index, gap ->
+            val startTime = Date(gap.first)
+            val endTime = Date(gap.second)
+            val gapDuration = endTime.time - startTime.time // Duration in milliseconds
+            val durationMinutes = gapDuration / 60000 // Convert to minutes
+            val format = SimpleDateFormat("HH:mm", Locale.getDefault())
+            val text = "${format.format(startTime)} - ${format.format(endTime)} ($durationMinutes min)"
+            buttons.getOrNull(index)?.text = text
+        }
+    }
 }
