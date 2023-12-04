@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <!-- Light maroon color -->
+
+    <ImageView
+        android:id="@+id/myImageView"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="19dp"
+        android:src="@drawable/img" />
+
+    <TextView
+        android:id="@+id/healthcheckup"
+        android:layout_width="352dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="37dp"
+        android:layout_marginTop="114dp"
+        android:text="Your Health Check-up is due in 2 weeks. \n Click on the provider of your choice to add to calender"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/agenda"
+        android:layout_width="347dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="340dp"
+        android:textColor="@color/black"
+        android:text="You have the following breaks today. \n Choose your activity to add to calender" />
+
+    <Button
+        android:id="@+id/buttonhc1"
+        android:layout_width="338dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="161dp"
+        android:background="#7B241C"
+        android:text="Sunkist Hospital - 0.6 miles"
+        android:textColor="#FFFFFF" />
+
+    <Button
+        android:id="@+id/buttonhc2"
+        android:layout_width="337dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="45dp"
+        android:layout_marginTop="224dp"
+        android:background="#7B241C"
+        android:text="Banner Health  - 1.2 miles"
+        android:textColor="#FFFFFF" />
+
+    <Button
+        android:id="@+id/buttonhc3"
+        android:layout_width="339dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="45dp"
+        android:layout_marginTop="285dp"
+        android:background="#7B241C"
+        android:text="Hu Hu Kam Hospital - 1.6 miles"
+        android:textColor="#FFFFFF" />
+
+    <Button
+        android:id="@+id/buttona1"
+        android:layout_width="338dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="40dp"
+        android:layout_marginBottom="261dp"
+        android:background="#7B241C"
+        android:textColor="#FFFFFF"
+        android:text="START:12:30:00 - END:13:30:00 \n DURATION: 1:00:00 \n ACTIVITY: CORONADO PARK" />
+
+    <Button
+        android:id="@+id/buttona2"
+        android:layout_width="339dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="42dp"
+        android:layout_marginBottom="185dp"
+        android:background="#7B241C"
+        android:textColor="#FFFFFF"
+        android:text="START:14:00:00 - END:16:30:00 \n DURATION: 2:30:00 \n ACTIVITY: PHOENIX COUNTRY CLUB" />
+
+    <Button
+        android:id="@+id/buttona3"
+        android:layout_width="339dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="40dp"
+        android:layout_marginBottom="114dp"
+        android:background="#7B241C"
+        android:textColor="#FFFFFF"
+        android:text="START:18:00:30 - END:11:59:59 \n DURATION: 5:59:59 \n ACTIVITY: ENCANTO 18" />
+
+
+</RelativeLayout>
